@@ -14,10 +14,12 @@ class App extends Component {
       },
     }
   }
+  
   deleteItem = key => {
     const filteredItems = this.state.items.filter(item => {
       return item.key !== key
     })
+    window.localStorage.removeItem(filteredItems, filteredItems);
     this.setState({
       items: filteredItems,
     })
@@ -26,6 +28,7 @@ class App extends Component {
   handleInput = e => {
     const itemText = e.target.value
     const currentItem = { text: itemText, key: Date.now() }
+    window.localStorage.setItem(this.state.items, itemText);
     this.setState({
       currentItem,
     })
@@ -33,14 +36,17 @@ class App extends Component {
   addItem = e => {
     e.preventDefault()
     const newItem = this.state.currentItem
+    
     if (newItem.text !== '') {
       const items = [...this.state.items, newItem]
+      
       this.setState({
         items: items,
         currentItem: { text: '', key: '' },
       })
     }
   }
+  
   render() {
     return (
       <div className="App">
